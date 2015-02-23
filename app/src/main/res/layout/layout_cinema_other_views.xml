@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cinema_other_views"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@id/youtube_fragment_container"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/room_controller"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/cinebrah_red"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="4dp">
+
+        <Button
+            android:id="@+id/button_queue_list"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/ic_action_queue" />
+
+        <TextView
+            android:id="@+id/text_room_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_toLeftOf="@+id/button_next"
+            android:layout_toRightOf="@+id/button_queue_list"
+            android:gravity="center"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:singleLine="true"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/button_next"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/selector_next_button" />
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/layout_expandable_queued_videos"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <fragment
+            android:id="@+id/queued_videos_fragment"
+            android:name="com.cinebrah.cinebrah.fragments.QueuedVideosFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout="@layout/fragment_queued_videos" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/cinema_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible" />
+</LinearLayout>

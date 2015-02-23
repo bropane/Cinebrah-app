@@ -1,0 +1,53 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:wheel="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cinebrah_red"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.cinebrah.cinebrah.activities.LaunchActivity">
+
+    <RelativeLayout
+        android:id="@+id/layout_wrapper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true">
+
+        <ImageView
+            android:id="@+id/iv_cinebrah_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/cinebrah_login" />
+
+        <tr.xip.errorview.ErrorView xmlns:errorview="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/error_view_launch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            errorview:ev_errorSubtitleColor="@android:color/white"
+            errorview:ev_errorTitleColor="@android:color/white"
+            errorview:ev_retryButtonTextColor="@android:color/white" />
+
+
+    </RelativeLayout>
+
+    <com.pnikosis.materialishprogress.ProgressWheel
+        android:id="@+id/progress_bar_launch"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/layout_wrapper"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        wheel:matProg_barColor="@android:color/white"
+        wheel:matProg_progressIndeterminate="true"
+        wheel:matProg_rimColor="@color/cinebrah_red" />
+
+
+</RelativeLayout>

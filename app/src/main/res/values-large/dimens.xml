@@ -1,0 +1,8 @@
+<resources>
+
+    <dimen name="player_height">300dp</dimen>
+
+    <dimen name="player_minimized_height">165dp</dimen>
+    <dimen name="player_minimized_width">300dp</dimen>
+
+</resources>

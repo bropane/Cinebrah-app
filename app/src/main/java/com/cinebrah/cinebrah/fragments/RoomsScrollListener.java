@@ -1,0 +1,103 @@
+package com.cinebrah.cinebrah.fragments;
+
+import android.widget.AbsListView;
+
+import com.appspot.cinebrahs.cinebrahApi.model.ApiCinebrahApiMessagesRoomMessage;
+
+import java.util.ArrayList;
+
+/**
+ * Created by Taylor on 2/12/2015.
+ */
+public abstract class RoomsScrollListener implements AbsListView.OnScrollListener {
+
+    // The minimum amount of items to have below your current scroll position
+    // before loading more.
+    private int visibleThreshold = 5;
+    // The current offset index of data you have loaded
+    private int currentPage = 0;
+    // The total number of items in the dataset after the last load
+    private int previousTotalItemCount = 0;
+    // True if we are still waiting for the last set of data to load.
+    private boolean loading = true;
+    // Sets the starting page index
+    private int startingPage = 0;
+
+    private int firstVisibleItem, lastVisibleItem;
+    private AbsListView listView;
+
+
+    public RoomsScrollListener() {
+    }
+
+    public RoomsScrollListener(int visibleThreshold) {
+        this.visibleThreshold = visibleThreshold;
+    }
+
+    public RoomsScrollListener(int visibleThreshold, int startPage) {
+        this.visibleThreshold = visibleThreshold;
+        this.startingPage = startPage;
+        this.currentPage = startPage;
+    }
+
+    // This happens many times a second during a scroll, so be wary of the code you place here.
+    // We are given a few useful parameters to help us work out if we need to load some more data,
+    // but first we check if we are waiting for the previous load to finish.
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        // If the total item count is zero and the previous isn't, assume the
+        // list is invalidated and should be reset back to initial state
+        this.listView = view;
+        this.firstVisibleItem = view.getFirstVisiblePosition();
+        this.lastVisibleItem = view.getLastVisiblePosition();
+
+        if (totalItemCount < previousTotalItemCount) {
+            this.currentPage = this.startingPage;
+            this.previousTotalItemCount = totalItemCount;
+            if (totalItemCount == 0) {
+                this.loading = true;
+            }
+        }
+
+        // If it’s still loading, we check to see if the dataset count has
+        // changed, if so we conclude it has finished loading and update the current page
+        // number and total item count.
+        if (loading && (totalItemCount > previousTotalItemCount)) {
+            loading = false;
+            previousTotalItemCount = totalItemCount;
+            currentPage++;
+        }
+
+        // If it isn’t currently loading, we check to see if we have breached
+        // the visibleThreshold and need to reload more data.
+        // If we do need to reload some more data, we execute onLoadMore to fetch the data.
+        if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
+            onLoadMore(currentPage + 1, totalItemCount);
+            loading = true;
+        }
+    }
+
+    // Defines the process for actually loading more data based on page
+    public abstract void onLoadMore(int page, int totalItemsCount);
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+        // Don't take any action on changed
+    }
+
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    public ArrayList<ApiCinebrahApiMessagesRoomMessage> getVisibleRooms() {
+        ArrayList<ApiCinebrahApiMessagesRoomMessage> rooms = new ArrayList<>();
+        for (int i = firstVisibleItem; i <= lastVisibleItem; i++) {
+            rooms.add((ApiCinebrahApiMessagesRoomMessage) listView.getAdapter().getItem(i));
+        }
+        return rooms;
+    }
+}

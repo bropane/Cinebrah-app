@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Cinebrah</string>
+    <string name="title_activity_cinema">CinemaActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="error_player">There was an error initializing the YouTubePlayer (%1$s)</string>
+    <string name="no_queued_videos_text">No Queued Videos</string>
+    <string name="queued_by_text">Queued by: </string>
+    <string name="queued_video_success">Queued Video Successfully</string>
+    <string name="next_video">Next Video</string>
+    <string name="vote_skip">Sent Skip Vote</string>
+    <string name="no_videos_vote_skip">Can\'t skip, no video playing</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="search_action_title">Search</string>
+    <string name="search_youtube">Search Youtube</string>
+    <string name="no_search_results">No Search Results</string>
+    <string name="hint_chat_box">Chat</string>
+    <string name="online">Online</string>
+    <string name="aboutLibraries_description_showIcon">true</string>
+    <string name="aboutLibraries_description_showVersion">true</string>
+    <string name="aboutLibraries_description_text">Experience Youtube in a whole new way with people from all around the world.</string>
+    <string name="showcase_button_ok">OK</string>
+    <string name="showcase_queue_title">Queue Videos</string>
+    <string name="showcase_queue_text">Share videos by adding them to the playlist</string>
+    <string name="showcase_playlist_title">View Playlist</string>
+    <string name="showcase_playlist_text">Press this button to view upcoming videos</string>
+    <string name="showcase_skip_title">Skip Videos</string>
+    <string name="showcase_skip_text">Press this button to vote to skip the current video</string>
+    <string name="showcase_chat_title">Chat</string>
+    <string name="showcase_chat_text">Chat with others watching the same video</string>
+    <string name="button_skip">Skip</string>
+    <string name="serverbrah">ServerBrah</string>
+
+    <string-array name="welcome_messages">
+        <item>Sup brah, share cool videos by queuing them in the playlist.</item>
+        <item>Sup brah! We know you have a cool video to share, queue it.</item>
+        <item>Sup brah, </item>
+    </string-array>
+
+    <string name="welcome_chat_message">Know any good videos? Share them by queuing them in the playlist!</string>
+    <string name="title_activity_room_chooser">RoomChooserActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="add_to_queue">Queue Video</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="add_video">Video</string>
+    <string name="drawer_open">Open drawer</string>
+    <string name="drawer_close">Close drawer</string>
+    <string name="nav_my_room">My Room</string>
+    <string name="nav_sign_in">Sign-in</string>
+    <string name="nav_browse">BROWSE</string>
+    <string name="nav_categories">Categories</string>
+    <string name="nav_popular">Popular</string>
+    <string name="nav_random">Join Random</string>
+    <string name="nav_favorites">Favorites</string>
+    <string name="nav_search">Search</string>
+    <string name="title_activity_launch">LaunchActivity</string>
+    <string name="watching">" Watching"</string>
+    <string name="now_playing">Now Playing:</string>
+    <string name="search_rooms_hint">Search Cinebrah</string>
+    <string name="title_activity_search">Search</string>
+
+    <string name="error_view_title">DYEL?</string>
+    <string name="error_view_subtitle">Could not connect</string>
+
+</resources>

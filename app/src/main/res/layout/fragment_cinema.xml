@@ -1,0 +1,57 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.cinebrah.cinebrah.fragments.CinemaFragment">
+
+    <LinearLayout
+        android:id="@+id/room_controller"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/cinebrah_red"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="4dp">
+
+        <Button
+            android:id="@+id/button_queue_list"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/selector_queue_button" />
+
+        <Space
+            android:layout_width="20dp"
+            android:layout_height="0px" />
+
+        <TextView
+            android:id="@+id/text_watching_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="@string/online"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <Space
+            android:layout_width="0px"
+            android:layout_height="0px"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/button_next"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/selector_next_button" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/layout_cinema_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/room_controller"
+        android:background="@color/listBackground_openSource" />
+
+</RelativeLayout>

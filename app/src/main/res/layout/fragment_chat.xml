@@ -1,0 +1,41 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    tools:context="com.cinebrah.cinebrah.fragments.ChatFragment">>
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/edit_text_chat_input"
+        android:layout_alignParentTop="true"
+        android:clipToPadding="false"
+        android:divider="@color/listBackground_openSource"
+        android:dividerHeight="8dp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:paddingTop="8dp"
+        android:scrollbars="none"
+        android:transcriptMode="normal" />
+
+    <EditText
+        android:id="@+id/edit_text_chat_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="false"
+        android:layout_margin="8dp"
+        android:background="@android:color/white"
+        android:hint="@string/hint_chat_box"
+        android:imeOptions="actionSend"
+        android:inputType="text"
+        android:padding="4dp"
+        android:singleLine="true"
+        android:textColor="@android:color/black"
+        android:textSize="20dp" />
+
+</RelativeLayout>

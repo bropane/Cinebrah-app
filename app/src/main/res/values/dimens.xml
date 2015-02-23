@@ -1,0 +1,15 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="video_duration_text_size">16sp</dimen>
+
+    <dimen name="player_height">200dp</dimen>
+    <dimen name="player_minimized_margin">12dp</dimen>
+    <dimen name="player_minimized_height">110dp</dimen>
+    <dimen name="player_minimized_width">200dp</dimen>
+    <item name="player_scale_factor" format="float" type="dimen">1.9</item>
+
+    <dimen name="drawer_text_size">16sp</dimen>
+
+</resources>

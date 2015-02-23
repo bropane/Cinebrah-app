@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:cinebrah="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.cinebrah.cinebrah.activities.RoomChooserActivity">
+
+    <item
+        android:id="@+id/menu_search_rooms"
+        android:icon="@drawable/ic_action_search"
+        android:orderInCategory="0"
+        android:title="@string/search_action_title"
+        cinebrah:showAsAction="always" />
+
+</menu>

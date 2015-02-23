@@ -1,0 +1,25 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="8dp"
+    tools:context="com.cinebrah.cinebrah.fragments.SearchRoomsFragment">
+
+
+    <EditText
+        android:id="@+id/et_search_rooms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:hint="@string/search_rooms_hint"
+        android:singleLine="true" />
+
+    <ListView
+        android:id="@+id/list_search_rooms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_search_rooms"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>

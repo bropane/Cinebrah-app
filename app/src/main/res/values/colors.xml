@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="blue">#ff4497ce</color>
+    <color name="blue_black">#FF1B1B20</color>
+    <color name="light_blue_black">#FF303036</color>
+    <color name="red_black">#ff0d0303</color>
+    <color name="light_red_black">#aa797979</color>
+    <color name="showcase_background">#88000000</color>
+    <color name="transparent_black">#be000000</color>
+    <color name="cinebrah_red">#DE2925</color>
+    <color name="dark_cinebrah_red">#ffb52824</color>
+    <color name="cinebrah_red_selected">#c3de2925</color>
+    <color name="red_list_divider">#EE5B4F</color>
+    <color name="youtube_view_background">#ff000000</color>
+    <color name="transparent_tint">#9e5d0b0b</color>
+
+    <drawable name="list_drawer_item_background">@android:color/transparent</drawable>
+    <drawable name="list_drawer_item_pressed">@android:color/darker_gray</drawable>
+    <drawable name="list_drawer_item_activated">@color/cinebrah_red_selected</drawable>
+</resources>
