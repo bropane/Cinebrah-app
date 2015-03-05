@@ -3,7 +3,8 @@ package com.cinebrah.cinebrah;
 import android.app.Application;
 import android.content.Context;
 
-import com.cinebrah.cinebrah.net.ApiService;
+import com.cinebrah.cinebrah.net.ApiClient;
+import com.cinebrah.cinebrah.net.CinebrahEndpoints;
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
 
@@ -18,10 +19,10 @@ public class BaseApplication extends Application {
 
     private static Bus mBus;
 
-    private static ApiService mApi;
+    private static CinebrahEndpoints mCinebrahEndpoints;
 
-    public static ApiService getApiService() {
-        return mApi;
+    public static CinebrahEndpoints getCinebrahService() {
+        return mCinebrahEndpoints;
     }
 
     public static Context getContext() {
@@ -37,7 +38,7 @@ public class BaseApplication extends Application {
         super.onCreate();
         mContext = this;
         mBus = new Bus(ThreadEnforcer.ANY);
-        mApi = new ApiService();
+        mCinebrahEndpoints = ApiClient.getCinebrahService();
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }

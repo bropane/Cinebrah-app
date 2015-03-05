@@ -2,10 +2,6 @@ package com.cinebrah.cinebrah.fragments;
 
 import android.widget.AbsListView;
 
-import com.appspot.cinebrahs.cinebrahApi.model.ApiCinebrahApiMessagesRoomMessage;
-
-import java.util.ArrayList;
-
 /**
  * Created by Taylor on 2/12/2015.
  */
@@ -93,11 +89,11 @@ public abstract class RoomsScrollListener implements AbsListView.OnScrollListene
         this.currentPage = currentPage;
     }
 
-    public ArrayList<ApiCinebrahApiMessagesRoomMessage> getVisibleRooms() {
+    /*public ArrayList<ApiCinebrahApiMessagesRoomMessage> getVisibleRooms() {
         ArrayList<ApiCinebrahApiMessagesRoomMessage> rooms = new ArrayList<>();
         for (int i = firstVisibleItem; i <= lastVisibleItem; i++) {
             rooms.add((ApiCinebrahApiMessagesRoomMessage) listView.getAdapter().getItem(i));
         }
         return rooms;
-    }
+    }*/
 }

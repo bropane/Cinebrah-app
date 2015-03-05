@@ -7,16 +7,15 @@ import android.os.Bundle;
 
 import com.cinebrah.cinebrah.BaseApplication;
 import com.cinebrah.cinebrah.R;
-import com.cinebrah.cinebrah.net.ApiService;
-import com.cinebrah.cinebrah.utils.AppConstants;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
-import com.squareup.otto.Subscribe;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import timber.log.Timber;
+
+//import com.cinebrah.cinebrah.net.ApiServiceOld;
 
 
 /**
@@ -121,10 +120,10 @@ public class LoginActivity extends Activity implements GoogleApiClient.Connectio
     public void onConnected(Bundle bundle) {
         mSignInClicked = false;
         String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
-        BaseApplication.getApiService().init(email);
+//        BaseApplication.getApiService().init(email);
         Timber.i("G+ Account Name: %s", email);
 //        AppConstants.setStoredEmail(email);
-        BaseApplication.getApiService().register(AppConstants.getUserId());
+//        BaseApplication.getApiService().register(AppConstants.getUserId());
     }
 
     @Override
@@ -154,14 +153,14 @@ public class LoginActivity extends Activity implements GoogleApiClient.Connectio
         outState.putBoolean(STATE_RESOLVING_ERROR, mIntentInProgress);
     }
 
-    @Subscribe
-    public void onRegisteredEvent(ApiService.RegisterEvent event) {
+    /*@Subscribe
+    public void onRegisteredEvent(ApiServiceOld.RegisterEvent event) {
         if (event.isSuccessful() || event.getStatus().equals("User already registered with this Google Account")) {
             Intent intent = new Intent(this, LaunchActivity.class);
             startActivity(intent);
             finish();
         }
-    }
+    }*/
 
 }
 

@@ -6,18 +6,12 @@ import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
-import com.appspot.cinebrahs.cinebrahApi.model.ApiCinebrahApiMessagesRoomMessage;
 import com.cinebrah.cinebrah.BaseApplication;
-import com.cinebrah.cinebrah.utils.AppConstants;
 
-import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
-import timber.log.Timber;
 
 /**
  * Created by Taylor on 2/18/2015.
@@ -89,13 +83,13 @@ public abstract class RoomsFragment extends ListFragment {
         mScheduleTaskExecutor.shutdownNow();
     }
 
-    @Override
+   /* @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         ApiCinebrahApiMessagesRoomMessage item = roomAdapter.getItem(position);
         Timber.i("Room Id: %s", item.getRoomId());
         BaseApplication.getApiService().connectToRoom(AppConstants.getUserId(), item.getRoomId());
-    }
+    }*/
 
     public abstract void onLoadMore(int page, int totalItemsCount);
 
@@ -103,11 +97,11 @@ public abstract class RoomsFragment extends ListFragment {
         return roomAdapter;
     }
 
-    public void addRooms(ArrayList<ApiCinebrahApiMessagesRoomMessage> rooms) {
+    /*public void addRooms(ArrayList<ApiCinebrahApiMessagesRoomMessage> rooms) {
         for (ApiCinebrahApiMessagesRoomMessage room : rooms) {
             getRoomAdapter().add(room);
         }
-    }
+    }*/
 
     public int getCurrentPage() {
         return mCurrentPage;
@@ -121,8 +115,8 @@ public abstract class RoomsFragment extends ListFragment {
 
         @Override
         public void run() {
-            ArrayList<ApiCinebrahApiMessagesRoomMessage> rooms = scrollListener.getVisibleRooms();
-            BaseApplication.getApiService().getInfoForRooms(rooms);
+            /*ArrayList<ApiCinebrahApiMessagesRoomMessage> rooms = scrollListener.getVisibleRooms();
+            BaseApplication.getApiService().getInfoForRooms(rooms);*/
         }
 
 

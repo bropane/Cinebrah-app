@@ -4,13 +4,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.cinebrah.cinebrah.BaseApplication;
-import com.cinebrah.cinebrah.R;
-import com.cinebrah.cinebrah.net.models.QueueVideo;
+import com.cinebrah.cinebrah.net.models.QueueVideoDepreciated;
 import com.cinebrah.cinebrah.utils.AppConstants;
-import com.google.api.client.extensions.android.http.AndroidHttp;
-import com.google.api.client.http.HttpRequest;
-import com.google.api.client.http.HttpRequestInitializer;
-import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.ResourceId;
 import com.google.api.services.youtube.model.SearchListResponse;
@@ -40,12 +35,12 @@ public class YoutubeSearcher {
     private static YouTube youtube;
 
     public YoutubeSearcher() {
-        youtube = new YouTube.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), new HttpRequestInitializer() {
+        /*youtube = new YouTube.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), new HttpRequestInitializer() {
             @Override
             public void initialize(HttpRequest request) throws IOException {
 
             }
-        }).setApplicationName(BaseApplication.getContext().getString(R.string.app_name)).build();
+        }).setApplicationName(BaseApplication.getContext().getString(R.string.app_name)).build();*/
     }
 
     public static void prettyPrint(Iterator<SearchResult> iteratorSearchResults, String query) {
@@ -173,14 +168,14 @@ public class YoutubeSearcher {
 
     public static class YoutubeVideoEvent {
 
-        QueueVideo queueVideo;
+        QueueVideoDepreciated queueVideoDepreciated;
 
-        public YoutubeVideoEvent(QueueVideo queueVideo) {
-            this.queueVideo = queueVideo;
+        public YoutubeVideoEvent(QueueVideoDepreciated queueVideoDepreciated) {
+            this.queueVideoDepreciated = queueVideoDepreciated;
         }
 
-        public QueueVideo getQueueVideo() {
-            return queueVideo;
+        public QueueVideoDepreciated getQueueVideoDepreciated() {
+            return queueVideoDepreciated;
         }
     }
 

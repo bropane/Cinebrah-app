@@ -64,5 +64,8 @@
 
     <string name="error_view_title">DYEL?</string>
     <string name="error_view_subtitle">Could not connect</string>
+    <string name="launch_error_default">Could not connect</string>
+    <string name="dyel">DYEL?</string>
+    <string name="launch_error_button">RETRY</string>
 
 </resources>

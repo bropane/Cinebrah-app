@@ -1,17 +1,6 @@
 package com.cinebrah.cinebrah.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
-
-import com.appspot.cinebrahs.cinebrahApi.model.ApiCinebrahApiMessagesRoomMessage;
-import com.cinebrah.cinebrah.BaseApplication;
-import com.cinebrah.cinebrah.activities.CinemaActivity;
-import com.cinebrah.cinebrah.net.ApiService;
-import com.squareup.otto.Subscribe;
-
-import java.util.ArrayList;
-
-import timber.log.Timber;
 
 public class GetRoomsFragment extends RoomsFragment {
 
@@ -52,7 +41,7 @@ public class GetRoomsFragment extends RoomsFragment {
     public void onStart() {
         super.onStart();
         if (getRoomAdapter().getCount() == 0) {
-            BaseApplication.getApiService().getRooms(getCurrentPage());
+//            BaseApplication.getApiService().getRooms(getCurrentPage());
         }
     }
 
@@ -63,27 +52,27 @@ public class GetRoomsFragment extends RoomsFragment {
 
     @Override
     public void onLoadMore(int page, int totalItemsCount) {
-        BaseApplication.getApiService().getRooms(page);
+//        BaseApplication.getApiService().getRooms(page);
     }
 
-    @Subscribe
-    public void onReceivedRooms(ApiService.GetRoomsEvent event) {
+    /*@Subscribe
+    public void onReceivedRooms(ApiServiceOld.GetRoomsEvent event) {
         addRooms(event.getRooms());
 
-    }
+    }*/
 
-    @Subscribe
-    public void onConnectedToRoom(ApiService.ConnectRoomEvent event) {
+    /*@Subscribe
+    public void onConnectedToRoom(ApiServiceOld.ConnectRoomEvent event) {
         Timber.d("Connected to Room Subscribe");
         if (event.isSuccessful()) {
             Intent intent = new Intent(getActivity(), CinemaActivity.class);
             intent.putExtra(CinemaActivity.KEY_ROOM_ID, event.getRoomId());
             getActivity().startActivity(intent);
         }
-    }
+    }*/
 
-    @Subscribe
-    public void onUpdateRooms(ApiService.GetInfoForRoomsEvent event) {
+   /* @Subscribe
+    public void onUpdateRooms(ApiServiceOld.GetInfoForRoomsEvent event) {
         ArrayList<ApiCinebrahApiMessagesRoomMessage> rooms = event.getRooms();
         for (ApiCinebrahApiMessagesRoomMessage room : rooms) {
             ApiCinebrahApiMessagesRoomMessage rm = getRoomAdapter().getItem(room.getRoomId());
@@ -99,6 +88,6 @@ public class GetRoomsFragment extends RoomsFragment {
             }
         });
 
-    }
+    }*/
 
 }

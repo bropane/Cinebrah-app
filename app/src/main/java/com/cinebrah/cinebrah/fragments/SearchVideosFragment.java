@@ -20,7 +20,6 @@ import android.widget.TextView;
 import com.cinebrah.cinebrah.BaseApplication;
 import com.cinebrah.cinebrah.R;
 import com.cinebrah.cinebrah.net.YoutubeSearcher;
-import com.koushikdutta.ion.Ion;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -69,7 +68,7 @@ public class SearchVideosFragment extends ListFragment {
         getListView().setOnScrollListener(new YoutubeSearchScrollListener() {
             @Override
             public void onLoadMore(String page, int totalItemsCount) {
-                BaseApplication.getApiService().getYoutubeSearcher().searchVideos(currentQuery, nextPageToken);
+//                BaseApplication.getApiService().getYoutubeSearcher().searchVideos(currentQuery, nextPageToken);
             }
         });
         getListView().setVerticalScrollBarEnabled(false);
@@ -241,7 +240,7 @@ public class SearchVideosFragment extends ListFragment {
             TextView duration = viewHolder.getDuration();
 
             //Loads youtube thumbnail using Ion library into image view
-            Ion.with(thumbnail).load(getItem(position).getResult().getSnippet().getThumbnails().getMedium().getUrl());
+//            Ion.with(thumbnail).load(getItem(position).getResult().getSnippet().getThumbnails().getMedium().getUrl());
             videoTitle.setText(this.getItem(position).getResult().getSnippet().getTitle());
             videoChannelTitle.setText(this.getItem(position).getResult().getSnippet().getChannelTitle());
             duration.setText(this.getItem(position).getDurationFormatted());

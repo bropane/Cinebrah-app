@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.appspot.cinebrahs.cinebrahApi.model.ApiCinebrahApiMessagesRoomMessage;
 import com.cinebrah.cinebrah.R;
 import com.cinebrah.cinebrah.utils.AppConstants;
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -27,16 +26,16 @@ import timber.log.Timber;
  */
 public class RoomAdapter extends BaseAdapter {
 
-    private ArrayList<ApiCinebrahApiMessagesRoomMessage> rooms;
+    private ArrayList<Object> rooms;
     private ThumbnailListener thumbnailListener;
     private Map<YouTubeThumbnailView, YouTubeThumbnailLoader> thumbnailViewToLoaderMap;
     private LayoutInflater inflater;
-    private HashMap<String, ApiCinebrahApiMessagesRoomMessage> roomMap;
+    private HashMap<String, Object> roomMap;
 
     public RoomAdapter() {
         super();
-        this.rooms = new ArrayList<>();
-        this.roomMap = new HashMap<>();
+//        this.rooms = new ArrayList<>();
+//        this.roomMap = new HashMap<>();
         thumbnailViewToLoaderMap = new HashMap<>();
         thumbnailListener = new ThumbnailListener();
         Timber.d("Creating RoomAdapter");
@@ -52,23 +51,23 @@ public class RoomAdapter extends BaseAdapter {
         }
     }
 
-    public void add(ApiCinebrahApiMessagesRoomMessage item) {
-        rooms.add(item);
-        roomMap.put(item.getRoomId(), item);
+    public void add(Object item) {
+        /*rooms.add(item);
+        roomMap.put(item.getRoomId(), item);*/
         notifyDataSetChanged();
     }
 
-    public void addAll(List<ApiCinebrahApiMessagesRoomMessage> items) {
-        for (ApiCinebrahApiMessagesRoomMessage item : items) {
+    public void addAll(List<Object> items) {
+        /*for (ApiCinebrahApiMessagesRoomMessage item : items) {
             rooms.add(item);
             roomMap.put(item.getRoomId(), item);
-        }
+        }*/
         notifyDataSetChanged();
     }
 
     public void clear() {
         Timber.d("Room Adapter Clear called");
-        rooms.clear();
+//        rooms.clear();
         notifyDataSetChanged();
     }
 
@@ -83,11 +82,11 @@ public class RoomAdapter extends BaseAdapter {
     }
 
     @Override
-    public ApiCinebrahApiMessagesRoomMessage getItem(int i) {
+    public Object getItem(int i) {
         return rooms.get(i);
     }
 
-    public ApiCinebrahApiMessagesRoomMessage getItem(String roomId) {
+    public Object getItem(String roomId) {
         return roomMap.get(roomId);
     }
 
@@ -95,13 +94,13 @@ public class RoomAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         View row = convertView;
         ViewHolder viewHolder;
-        ApiCinebrahApiMessagesRoomMessage room = getItem(position);
+//        ApiCinebrahApiMessagesRoomMessage room = getItem(position);
         if (row == null) {
             row = inflater.inflate(R.layout.list_item_room, parent, false);
             viewHolder = new ViewHolder(row);
             row.setTag(viewHolder);
             YouTubeThumbnailView thumbnail = viewHolder.getThumbnail();
-            thumbnail.setTag(room.getVideoId());
+//            thumbnail.setTag(room.getVideoId());
             thumbnail.initialize(AppConstants.DEVELOPER_KEY, thumbnailListener);
         } else {
             viewHolder = (ViewHolder) row.getTag();
@@ -110,11 +109,11 @@ public class RoomAdapter extends BaseAdapter {
             if (loader == null) {
                 // 2) The view is already created, and is currently being initialized. We store the
                 //    current videoId in the tag.
-                thumbnail.setTag(room.getVideoId());
+//                thumbnail.setTag(room.getVideoId());
             } else {
                 // 3) The view is already created and already initialized. Simply set the right videoId
                 //    on the loader.
-                if (room.getVideoId() != null) {
+                /*if (room.getVideoId() != null) {
                     try {
                         loader.setVideo(room.getVideoId());
                     } catch (IllegalStateException e) {
@@ -122,7 +121,7 @@ public class RoomAdapter extends BaseAdapter {
                     }
                 } else {
                     thumbnail.setImageResource(R.drawable.ic_room_placeholder_thumbnail);
-                }
+                }*/
             }
         }
 
@@ -130,9 +129,9 @@ public class RoomAdapter extends BaseAdapter {
         TextView currentVideo = viewHolder.getCurrentVideo();
         TextView watcherCount = viewHolder.getWatcherCount();
 
-        roomName.setText(this.getItem(position).getRoomName());
+        /*roomName.setText(this.getItem(position).getRoomName());
         watcherCount.setText(this.getItem(position).getUserCount().toString());
-        currentVideo.setText(this.getItem(position).getVideoName());
+        currentVideo.setText(this.getItem(position).getVideoName());*/
         return row;
     }
 

@@ -17,10 +17,7 @@ import com.cinebrah.cinebrah.R;
 import com.cinebrah.cinebrah.fragments.ChatFragment;
 import com.cinebrah.cinebrah.fragments.CinebrahPlayerFragment;
 import com.cinebrah.cinebrah.fragments.SearchVideosFragment;
-import com.cinebrah.cinebrah.net.ApiService;
-import com.cinebrah.cinebrah.net.GcmIntentService;
 import com.cinebrah.cinebrah.net.YoutubeSearcher;
-import com.cinebrah.cinebrah.utils.AppConstants;
 import com.squareup.otto.Subscribe;
 
 import java.util.regex.Matcher;
@@ -30,7 +27,6 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class CinemaActivity extends ActionBarActivity {
 
@@ -46,7 +42,7 @@ public class CinemaActivity extends ActionBarActivity {
     @InjectView(R.id.back_fragment_container)
     FrameLayout backFragmentContainer;
 
-    ApiService.RoomInfoEvent currentRoomInfo = new ApiService.RoomInfoEvent();
+//    ApiServiceOld.RoomInfoEvent currentRoomInfo = new ApiServiceOld.RoomInfoEvent();
 
     boolean isQueueListExpanded = false;
     boolean isTutorialShowing;
@@ -58,7 +54,7 @@ public class CinemaActivity extends ActionBarActivity {
     SearchVideosFragment searchVideosFragment;
 
     Handler handler;
-    PlayVideoTask playVideoTask;
+//    PlayVideoTask playVideoTask;
 
     String roomId;
 
@@ -103,7 +99,7 @@ public class CinemaActivity extends ActionBarActivity {
         ButterKnife.inject(this);
         Intent startIntent = getIntent();
         roomId = startIntent.getStringExtra(KEY_ROOM_ID);
-        BaseApplication.getApiService().getRoomInfo(roomId);
+//        BaseApplication.getApiService().getRoomInfo(roomId);
         getSupportActionBar().hide();
         cinebrahPlayerFragment = new CinebrahPlayerFragment();
         chatFragment = ChatFragment.newInstance();
@@ -115,7 +111,7 @@ public class CinemaActivity extends ActionBarActivity {
                 .commit();
 
         handler = new Handler();
-        playVideoTask = new PlayVideoTask();
+//        playVideoTask = new PlayVideoTask();
 
         BaseApplication.getBus().register(this);
 //        doLayout();
@@ -134,7 +130,7 @@ public class CinemaActivity extends ActionBarActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        BaseApplication.getApiService().disconnectFromRoom(AppConstants.getUserId(), roomId);
+//        BaseApplication.getApiService().disconnectFromRoom(AppConstants.getUserId(), roomId);
     }
 
     @Override
@@ -150,7 +146,7 @@ public class CinemaActivity extends ActionBarActivity {
         expandQueueList(!isQueueListExpanded);
     }
 
-    @SuppressWarnings("unused")
+    /*@SuppressWarnings("unused")
     @OnClick(R.id.button_next)
     void skipVideo() {
         if (currentRoomInfo.getCurrentVideoId() != null) {
@@ -161,7 +157,7 @@ public class CinemaActivity extends ActionBarActivity {
             Crouton.makeText(this, R.string.no_videos_vote_skip,
                     Style.INFO, R.id.cinema_fragment_container).show();
         }
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -225,11 +221,11 @@ public class CinemaActivity extends ActionBarActivity {
         }
     }
 
-    private void playCurrentVideo() {
+    /*private void playCurrentVideo() {
         if (currentRoomInfo.getCurrentVideoId() != null && !currentRoomInfo.getCurrentVideoId().equals("None")) {
             cinebrahPlayerFragment.playVideo(currentRoomInfo.getCurrentVideoId(), 1000 * (int) currentRoomInfo.getCurrentVideoTime());
         }
-    }
+    }*/
 
     private String getYoutubeShareData() {
         /**
@@ -268,24 +264,24 @@ public class CinemaActivity extends ActionBarActivity {
         }
     }
 
-    @SuppressWarnings("unused")
+    /*@SuppressWarnings("unused")
     @Subscribe
     public void onVideoEndedEvent(CinebrahPlayerFragment.VideoEndedEvent event) {
         BaseApplication.getApiService().requestAdvanceQueue(currentRoomInfo.getCurrentVideoId());
-    }
+    }*/
 
-    @SuppressWarnings("unused")
+    /*@SuppressWarnings("unused")
     @Subscribe
-    public void onReceivedRoomInfo(ApiService.RoomInfoEvent event) {
+    public void onReceivedRoomInfo(ApiServiceOld.RoomInfoEvent event) {
         this.currentRoomInfo = event;
         if (cinebrahPlayerFragment.isPlayerReady()) {
             playCurrentVideo();
         } else {
             handler.postDelayed(playVideoTask, 1000);
         }
-    }
+    }*/
 
-    @SuppressWarnings("unused")
+    /*@SuppressWarnings("unused")
     @Subscribe
     public void onNextVideoReceived(GcmIntentService.NextVideoEvent event) {
         currentRoomInfo.setCurrentVideoId(event.getYoutubeId());
@@ -300,7 +296,7 @@ public class CinemaActivity extends ActionBarActivity {
         } else {
             cinebrahPlayerFragment.pause();
         }
-    }
+    }*/
 /*
     @SuppressWarnings("unused")
     @Subscribe
@@ -312,18 +308,18 @@ public class CinemaActivity extends ActionBarActivity {
     @SuppressWarnings("unused")
     @Subscribe
     public void onReceivedYoutubeVideoDuration(YoutubeSearcher.YoutubeVideoEvent event) {
-        Log.i(LOG_TAG, "Queuing Video: \n" + "Video ID: " + event.getQueueVideo().getVideoId() +
-                "\nTitle: " + event.getQueueVideo().getVideoTitle() +
-                "\nChannel Title: " + event.getQueueVideo().getChannelTitle() +
-                "\nDuration in Seconds: " + event.getQueueVideo().getDuration());
+        Log.i(LOG_TAG, "Queuing Video: \n" + "Video ID: " + event.getQueueVideoDepreciated().getVideoId() +
+                "\nTitle: " + event.getQueueVideoDepreciated().getVideoTitle() +
+                "\nChannel Title: " + event.getQueueVideoDepreciated().getChannelTitle() +
+                "\nDuration in Seconds: " + event.getQueueVideoDepreciated().getDuration());
 //        BaseApplication.getApiService().queueVideo(event.getQueueVideo());
     }
 
-    @SuppressWarnings("unused")
+    /*@SuppressWarnings("unused")
     @Subscribe
-    public void onQueuedVideoResponse(ApiService.QueuedVideoEvent event) {
+    public void onQueuedVideoResponse(ApiServiceOld.QueuedVideoEvent event) {
         Crouton.makeText(this, R.string.queued_video_success, Style.CONFIRM, R.id.cinema_fragment_container).show();
-    }
+    }*/
 
 /*    @SuppressWarnings("unused")
     @Subscribe
@@ -336,11 +332,11 @@ public class CinemaActivity extends ActionBarActivity {
         });
     }*/
 
-    class PlayVideoTask implements Runnable {
+    /*class PlayVideoTask implements Runnable {
         @Override
         public void run() {
             playCurrentVideo();
         }
-    }
+    }*/
 
 }

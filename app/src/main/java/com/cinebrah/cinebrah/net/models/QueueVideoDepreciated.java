@@ -3,7 +3,7 @@ package com.cinebrah.cinebrah.net.models;
 /**
  * Created by Taylor on 9/10/2014.
  */
-public class QueueVideo {
+public class QueueVideoDepreciated {
     String videoId;
     String videoTitle;
     String channelTitle;
@@ -11,7 +11,7 @@ public class QueueVideo {
     String queuedBy;
     long duration;
 
-    public QueueVideo(String videoId, String videoTitle, String channelTitle, String thumbnailUrl, long duration, String queuedBy) {
+    public QueueVideoDepreciated(String videoId, String videoTitle, String channelTitle, String thumbnailUrl, long duration, String queuedBy) {
         this.videoId = videoId;
         this.videoTitle = videoTitle;
         this.channelTitle = channelTitle;

@@ -91,7 +91,7 @@ public class GcmManager {
                     storeRegistrationId(regId);
                 } catch (IOException ex) {
                     Timber.e(ex, "Could not get registration ID");
-                    BaseApplication.getBus().post(new ApiService.IOErrorEvent(ex));
+//                    BaseApplication.getBus().post(new ApiServiceOld.IOErrorEvent(ex));
                     this.cancel(true);
                     // If there is an error, don't just keep trying to register.
                     // Require the user to click a button again, or perform

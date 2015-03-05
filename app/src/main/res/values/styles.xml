@@ -13,15 +13,4 @@
         <item name="queryHint">@string/search_rooms_hint</item>
     </style>
 
-    <style name="CustomShowcaseTheme" parent="ShowcaseView">
-        <item name="sv_backgroundColor">#663d4353</item>
-        <item name="sv_showcaseColor">#25467A</item>
-        <item name="sv_buttonText">Next</item>
-        <item name="sv_titleTextAppearance">@style/CustomTitle</item>
-    </style>
-
-    <style name="CustomTitle" parent="TextAppearance.ShowcaseView.Title">
-        <item name="android:textColor">#FFFFFF</item>
-    </style>
-
 </resources>

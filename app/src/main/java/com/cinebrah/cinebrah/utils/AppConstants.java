@@ -7,18 +7,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.annotation.Nullable;
 
-import com.appspot.cinebrahs.cinebrahApi.CinebrahApi;
 import com.cinebrah.cinebrah.BaseApplication;
 import com.cinebrah.cinebrah.R;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.api.client.extensions.android.http.AndroidHttp;
-import com.google.api.client.extensions.android.json.AndroidJsonFactory;
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.json.JsonFactory;
 import com.tundem.aboutlibraries.Libs;
 import com.tundem.aboutlibraries.ui.LibsActivity;
 
@@ -34,29 +27,9 @@ public class AppConstants {
     public static final String CINEBRAH_PREFS_NAME = "cinebrahprefs";
     public static final String KEY_DEFAULT_ACCOUNT = "default_account";
     public static final String KEY_IS_FIRST_LAUNCH = "is_first_launch";
-    public static final String KEY_USER_ID = "user_id";
-    public static final String KEY_EMAIL = "email";
-
-    /**
-     * Class instance of the JSON factory.
-     */
-    public static final JsonFactory JSON_FACTORY = new AndroidJsonFactory();
-
-    /**
-     * Class instance of the HTTP transport.
-     */
-    public static final HttpTransport HTTP_TRANSPORT = AndroidHttp.newCompatibleTransport();
-
-
-    /**
-     * Retrieve a CinebrahApi api service handle to access the API.
-     */
-    public static CinebrahApi getApiServiceHandle(@Nullable GoogleAccountCredential credential) {
-        // Use a builder to help formulate the API request.
-        CinebrahApi.Builder service = new CinebrahApi.Builder(AppConstants.HTTP_TRANSPORT,
-                AppConstants.JSON_FACTORY, credential);
-        return service.build();
-    }
+    public static final String APP_SERVER = "https://cinebrah.herokuapp.com";
+    public static final String DEV_APP_SERVER = "http://127.0.0.1:5000";
+    public static final String CINEBRAH_API_KEY = "d79f7d9220433bd6400b407024006b61ce61d21f4bc8fbe46d67da1e";
 
     public static int countGoogleAccounts(Context context) {
         AccountManager am = AccountManager.get(context);
@@ -106,24 +79,6 @@ public class AppConstants {
 
     public static void setFirstLaunch(boolean launch) {
         AppConstants.getPreferences().edit().putBoolean(KEY_IS_FIRST_LAUNCH, launch).commit();
-    }
-
-    public static String getUserId() {
-        String userId = AppConstants.getPreferences().getString(AppConstants.KEY_USER_ID, null);
-        return userId;
-    }
-
-    public static void setUserId(String userId) {
-        AppConstants.getPreferences().edit().putString(AppConstants.KEY_USER_ID, userId).commit();
-    }
-
-    public static String getStoredEmail() {
-        String email = AppConstants.getPreferences().getString(AppConstants.KEY_EMAIL, null);
-        return email;
-    }
-
-    public static void setStoredEmail(String email) {
-        AppConstants.getPreferences().edit().putString(AppConstants.KEY_EMAIL, email).commit();
     }
 
     public static void startAboutActivity(Context context) {

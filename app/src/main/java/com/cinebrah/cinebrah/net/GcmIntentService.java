@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.cinebrah.cinebrah.BaseApplication;
-import com.cinebrah.cinebrah.net.models.QueueVideo;
+import com.cinebrah.cinebrah.net.models.QueueVideoDepreciated;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 /**
@@ -60,7 +60,7 @@ public class GcmIntentService extends IntentService {
                                 + "\nMessage Type: " + extras.getString(KEY_CHAT_MESSAGE_TYPE)
                                 + "\nMessage: " + extras.getString(KEY_MESSAGE));
                     } else if (action.equals(NEW_QUEUED_VIDEO_ACTION)) {
-                        QueueVideo video = new QueueVideo(null, extras.getString(KEY_VIDEO_TITLE),
+                        QueueVideoDepreciated video = new QueueVideoDepreciated(null, extras.getString(KEY_VIDEO_TITLE),
                                 extras.getString(KEY_VIDEO_CHANNEL_TITLE), extras.getString(KEY_VIDEO_THUMBNAIL),
                                 Integer.parseInt(extras.getString(KEY_VIDEO_DURATION)), extras.getString(KEY_VIDEO_QUEUED_BY));
                         BaseApplication.getBus().post(new NewVideoQueuedEvent(video));
@@ -110,13 +110,13 @@ public class GcmIntentService extends IntentService {
     }
 
     public static class NewVideoQueuedEvent {
-        QueueVideo video;
+        QueueVideoDepreciated video;
 
-        public NewVideoQueuedEvent(QueueVideo video) {
+        public NewVideoQueuedEvent(QueueVideoDepreciated video) {
             this.video = video;
         }
 
-        public QueueVideo getVideo() {
+        public QueueVideoDepreciated getVideo() {
             return video;
         }
     }

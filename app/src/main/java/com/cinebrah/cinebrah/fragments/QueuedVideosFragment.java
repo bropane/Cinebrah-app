@@ -13,14 +13,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.appspot.cinebrahs.cinebrahApi.model.ApiCinebrahApiMessagesQueuedVideoMessage;
 import com.cinebrah.cinebrah.BaseApplication;
 import com.cinebrah.cinebrah.R;
 import com.cinebrah.cinebrah.activities.CinemaActivity;
-import com.cinebrah.cinebrah.net.ApiService;
 import com.cinebrah.cinebrah.net.GcmIntentService;
-import com.cinebrah.cinebrah.net.models.QueueVideo;
-import com.koushikdutta.ion.Ion;
+import com.cinebrah.cinebrah.net.models.QueueVideoDepreciated;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -31,13 +28,13 @@ import butterknife.InjectView;
 
 public class QueuedVideosFragment extends ListFragment {
 
-    ArrayList<QueueVideo> mQueuedVideos;
+    ArrayList<QueueVideoDepreciated> mQueuedVideos;
     QueuedVideosAdapter mAdapter;
     Button headerButton;
     View header;
 
     public QueuedVideosFragment() {
-        mQueuedVideos = new ArrayList<QueueVideo>();
+        mQueuedVideos = new ArrayList<QueueVideoDepreciated>();
     }
 
     public static QueuedVideosFragment newInstance() {
@@ -88,8 +85,8 @@ public class QueuedVideosFragment extends ListFragment {
         setListAdapter(mAdapter);
     }
 
-    @Subscribe
-    public void onReceivedRoomInfo(ApiService.RoomInfoEvent event) {
+    /*@Subscribe
+    public void onReceivedRoomInfo(ApiServiceOld.RoomInfoEvent event) {
         mAdapter.removeAll();
         List<ApiCinebrahApiMessagesQueuedVideoMessage> queuedVideos = event.getQueuedVideos();
         for (ApiCinebrahApiMessagesQueuedVideoMessage message : queuedVideos) {
@@ -99,7 +96,7 @@ public class QueuedVideosFragment extends ListFragment {
             mAdapter.addItem(video);
         }
         updateList();
-    }
+    }*/
 
     @Subscribe
     public void onNextVideoReceived(GcmIntentService.NextVideoEvent event) {
@@ -140,22 +137,22 @@ public class QueuedVideosFragment extends ListFragment {
     class QueuedVideosAdapter extends BaseAdapter {
 
         Context context;
-        ArrayList<QueueVideo> queueVideos;
+        ArrayList<QueueVideoDepreciated> queueVideoDepreciateds;
 
-        public QueuedVideosAdapter(Context context, ArrayList<QueueVideo> queueVideos) {
+        public QueuedVideosAdapter(Context context, ArrayList<QueueVideoDepreciated> queueVideoDepreciateds) {
             super();
             this.context = context;
-            this.queueVideos = queueVideos;
+            this.queueVideoDepreciateds = queueVideoDepreciateds;
         }
 
         @Override
         public Object getItem(int i) {
-            return queueVideos.get(i);
+            return queueVideoDepreciateds.get(i);
         }
 
         @Override
         public int getCount() {
-            return queueVideos.size();
+            return queueVideoDepreciateds.size();
         }
 
         @Override
@@ -183,31 +180,31 @@ public class QueuedVideosFragment extends ListFragment {
             TextView queuedByTV = viewHolder.getQueuedByTV();
             ImageView thumbnailView = viewHolder.getThumbnailView();
 
-            QueueVideo video = queueVideos.get(position);
+            QueueVideoDepreciated video = queueVideoDepreciateds.get(position);
             videoTitleTV.setText(video.getVideoTitle());
             videoChannelTitleTV.setText(video.getChannelTitle());
             durationTV.setText(video.getDurationText());
             queuedByTV.setText("Queued by: " + video.getQueuedBy());
 
             //Loads youtube thumbnail using Ion library into image view
-            Ion.with(thumbnailView).load(video.getThumbnailUrl());
+//            Ion.with(thumbnailView).load(video.getThumbnailUrl());
             return row;
         }
 
-        public void addItem(QueueVideo video) {
-            queueVideos.add(video);
+        public void addItem(QueueVideoDepreciated video) {
+            queueVideoDepreciateds.add(video);
         }
 
-        public void addAll(List<QueueVideo> videos) {
-            queueVideos.addAll(videos);
+        public void addAll(List<QueueVideoDepreciated> videos) {
+            queueVideoDepreciateds.addAll(videos);
         }
 
         public void removeItem(int i) {
-            queueVideos.remove(i);
+            queueVideoDepreciateds.remove(i);
         }
 
         public void removeAll() {
-            queueVideos.clear();
+            queueVideoDepreciateds.clear();
         }
 
         class ViewHolder {

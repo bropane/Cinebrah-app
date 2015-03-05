@@ -24,23 +24,13 @@ import com.cinebrah.cinebrah.activities.drawer.DrawerHeader;
 import com.cinebrah.cinebrah.activities.drawer.DrawerSelection;
 import com.cinebrah.cinebrah.fragments.AsneFragment;
 import com.cinebrah.cinebrah.fragments.GetRoomsFragment;
-import com.cinebrah.cinebrah.net.ApiService;
-import com.cinebrah.cinebrah.utils.AppConstants;
-import com.github.gorbin.asne.core.SocialNetworkException;
-import com.github.gorbin.asne.core.listener.OnLoginCompleteListener;
-import com.github.gorbin.asne.core.listener.OnRequestSocialPersonCompleteListener;
-import com.github.gorbin.asne.core.persons.SocialPerson;
-import com.github.gorbin.asne.googleplus.GooglePlusSocialNetwork;
-import com.squareup.otto.Subscribe;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import timber.log.Timber;
 
-public class RoomChooserActivity extends BaseActivity implements OnLoginCompleteListener,
-        OnRequestSocialPersonCompleteListener, FragmentManager.OnBackStackChangedListener {
+public class RoomChooserActivity extends BaseActivity implements FragmentManager.OnBackStackChangedListener {
 
-    private static final String ASNE_FRAGMENT_TAG = "asnefragment";
     private static final String GET_ROOMS_FRAGMENT_TAG = "getroomsfragment";
     private static final int SIGN_OUT_CODE = 1337;
     @InjectView(R.id.drawer_layout)
@@ -49,7 +39,6 @@ public class RoomChooserActivity extends BaseActivity implements OnLoginComplete
     ListView mDrawerList;
     CustomDrawerAdapter mDrawerAdapter;
     GetRoomsFragment getRoomsFragment;
-    AsneFragment asneFragment;
     private SignOutHandler mSignOutHandler = new SignOutHandler();
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mTitle;
@@ -60,19 +49,13 @@ public class RoomChooserActivity extends BaseActivity implements OnLoginComplete
         setContentView(R.layout.activity_room_chooser);
         ButterKnife.inject(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        initFragments(savedInstanceState);
+//        initFragments(savedInstanceState);
         initDrawer();
     }
 
     private void initFragments(Bundle savedInstanceState) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         getSupportFragmentManager().addOnBackStackChangedListener(this);
-
-        asneFragment = (AsneFragment) getSupportFragmentManager().findFragmentByTag(ASNE_FRAGMENT_TAG);
-        if (asneFragment == null) {
-            asneFragment = new AsneFragment();
-            transaction.add(asneFragment, ASNE_FRAGMENT_TAG);
-        }
 
         getRoomsFragment = (GetRoomsFragment) getSupportFragmentManager().findFragmentByTag(GET_ROOMS_FRAGMENT_TAG);
         if (getRoomsFragment == null) {
@@ -113,10 +96,10 @@ public class RoomChooserActivity extends BaseActivity implements OnLoginComplete
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.room_chooser, menu);
         super.onCreateOptionsMenu(menu);
-
+/*
         if (AppConstants.getStoredEmail() != null) {
             menu.add(Menu.NONE, SIGN_OUT_CODE, 99, getString(R.string.sign_out));
-        }
+        }*/
         return true;
     }
 
@@ -135,10 +118,10 @@ public class RoomChooserActivity extends BaseActivity implements OnLoginComplete
         int id = item.getItemId();
         switch (id) {
             case SIGN_OUT_CODE:
-                asneFragment.getSocialNetworkManager().getSocialNetwork(GooglePlusSocialNetwork.ID).logout();
+/*                asneFragment.getSocialNetworkManager().getSocialNetwork(GooglePlusSocialNetwork.ID).logout();
                 AppConstants.setStoredEmail(null);
                 AppConstants.setUserId(null);
-                mSignOutHandler.sleep(1000);
+                mSignOutHandler.sleep(1000);*/
                 break;
             case R.id.menu_search_rooms:
                 startActivity(new Intent(this, SearchActivity.class));
@@ -151,12 +134,12 @@ public class RoomChooserActivity extends BaseActivity implements OnLoginComplete
                 GravityCompat.START);
         mDrawerAdapter = new CustomDrawerAdapter(this);
         mDrawerList.setAdapter(mDrawerAdapter);
-
+/*
         if (AppConstants.getStoredEmail() != null) {
             mDrawerAdapter.add(new DrawerSelection(getString(R.string.nav_my_room), getResources().getDrawable(R.drawable.ic_action_home)));
         } else {
             mDrawerAdapter.add(new DrawerSelection(getString(R.string.nav_sign_in), getResources().getDrawable(R.drawable.ic_action_account_circle)));
-        }
+        }*/
         mDrawerAdapter.add(new DrawerHeader(getString(R.string.nav_browse))); // adding a header to the list
         mDrawerAdapter.add(new DrawerSelection(getString(R.string.nav_popular), getResources().getDrawable(R.drawable.ic_action_trending_up)));
         mDrawerList.setItemChecked(mDrawerAdapter.getCount() - 1, true); //Highlight Popular on init
@@ -202,28 +185,6 @@ public class RoomChooserActivity extends BaseActivity implements OnLoginComplete
     }
 
     @Override
-    public void onLoginSuccess(int i) {
-        switch (i) {
-            case GooglePlusSocialNetwork.ID:
-                asneFragment.getSocialNetworkManager().getSocialNetwork(GooglePlusSocialNetwork.ID).requestCurrentPerson(this);
-                break;
-        }
-    }
-
-    @Override
-    public void onRequestSocialPersonSuccess(int i, SocialPerson socialPerson) {
-        String email = socialPerson.email;
-        AppConstants.setStoredEmail(email);
-        BaseApplication.getApiService().init(email);
-        BaseApplication.getApiService().register(AppConstants.getUserId());
-    }
-
-    @Override
-    public void onError(int i, String s, String s2, Object o) {
-
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(AsneFragment.SOCIAL_NETWORK_TAG);
         if (fragment != null) {
@@ -232,8 +193,8 @@ public class RoomChooserActivity extends BaseActivity implements OnLoginComplete
 
     }
 
-    @Subscribe
-    public void onRegisteredEvent(ApiService.UpgradeEvent event) {
+/*    @Subscribe
+    public void onRegisteredEvent(ApiServiceOld.UpgradeEvent event) {
         if (event.isSuccessful()) {
             AppConstants.setUserId(null);
             Intent intent = new Intent(this, LaunchActivity.class);
@@ -243,7 +204,7 @@ public class RoomChooserActivity extends BaseActivity implements OnLoginComplete
         } else {
             Timber.d("Could not register User Id: %s with E-mail: %s", AppConstants.getUserId(), AppConstants.getStoredEmail());
         }
-    }
+    }*/
 
     private class DrawerItemClickListener implements
             ListView.OnItemClickListener {
@@ -261,15 +222,9 @@ public class RoomChooserActivity extends BaseActivity implements OnLoginComplete
             } else if (dItemTitle == getString(R.string.nav_favorites)) {
 
             } else if (dItemTitle == getString(R.string.nav_random)) {
-                BaseApplication.getApiService().connectToRoom(AppConstants.getUserId(), "random");
+//                BaseApplication.getApiService().connectToRoom(AppConstants.getUserId(), "random");
             } else if (dItemTitle == getString(R.string.nav_sign_in)) {
-                GooglePlusSocialNetwork googlePlusSocialNetwork = (GooglePlusSocialNetwork)
-                        asneFragment.getSocialNetworkManager().getSocialNetwork(GooglePlusSocialNetwork.ID);
-                try {
-                    googlePlusSocialNetwork.requestLogin(RoomChooserActivity.this);
-                } catch (SocialNetworkException e) {
-                    Timber.e(e, "Could not sign in to Gplus");
-                }
+
             }
         }
     }
