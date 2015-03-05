@@ -24,7 +24,7 @@ public class BaseActivity extends ActionBarActivity {
         spiceManager.shouldStop();
     }
 
-    protected SpiceManager getSpiceManager() {
+    public SpiceManager getSpiceManager() {
         return spiceManager;
     }
 

@@ -18,6 +18,14 @@ public class GetRoomsRequest extends RetrofitSpiceRequest<RoomsResult, CinebrahE
         this.page = page;
     }
 
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
     @Override
     @DebugLog
     public RoomsResult loadDataFromNetwork() throws Exception {

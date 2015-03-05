@@ -1,11 +1,9 @@
 package com.cinebrah.cinebrah.activities;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -22,7 +20,6 @@ import com.cinebrah.cinebrah.R;
 import com.cinebrah.cinebrah.activities.drawer.CustomDrawerAdapter;
 import com.cinebrah.cinebrah.activities.drawer.DrawerHeader;
 import com.cinebrah.cinebrah.activities.drawer.DrawerSelection;
-import com.cinebrah.cinebrah.fragments.AsneFragment;
 import com.cinebrah.cinebrah.fragments.GetRoomsFragment;
 
 import butterknife.ButterKnife;
@@ -49,7 +46,7 @@ public class RoomChooserActivity extends BaseActivity implements FragmentManager
         setContentView(R.layout.activity_room_chooser);
         ButterKnife.inject(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        initFragments(savedInstanceState);
+        initFragments(savedInstanceState);
         initDrawer();
     }
 
@@ -62,10 +59,7 @@ public class RoomChooserActivity extends BaseActivity implements FragmentManager
             getRoomsFragment = GetRoomsFragment.newInstance();
             Timber.d("New GetRoomsFragment");
             transaction.replace(R.id.fragment_container_room_chooser, getRoomsFragment, GET_ROOMS_FRAGMENT_TAG);
-        } else {
-
         }
-
         transaction.commit();
     }
 
@@ -170,41 +164,6 @@ public class RoomChooserActivity extends BaseActivity implements FragmentManager
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
     }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(AsneFragment.SOCIAL_NETWORK_TAG);
-        if (fragment != null) {
-            fragment.onActivityResult(requestCode, resultCode, data);
-        }
-
-    }
-
-/*    @Subscribe
-    public void onRegisteredEvent(ApiServiceOld.UpgradeEvent event) {
-        if (event.isSuccessful()) {
-            AppConstants.setUserId(null);
-            Intent intent = new Intent(this, LaunchActivity.class);
-            startActivity(intent);
-            finish();
-            Timber.d("Registered with E-mail: %s successfully!", AppConstants.getStoredEmail());
-        } else {
-            Timber.d("Could not register User Id: %s with E-mail: %s", AppConstants.getUserId(), AppConstants.getStoredEmail());
-        }
-    }*/
 
     private class DrawerItemClickListener implements
             ListView.OnItemClickListener {

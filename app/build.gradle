@@ -50,4 +50,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile "org.mockito:mockito-core:1.9.5"
     compile 'com.octo.android.robospice:robospice-retrofit:1.4.14'
+    compile('com.mikepenz.materialdrawer:library:1.0.2@aar') {
+        transitive = true
+    }
 }

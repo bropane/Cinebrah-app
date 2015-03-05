@@ -39,7 +39,6 @@ public class LaunchActivity extends BaseActivity implements RetryListener, Reque
 
     boolean gettingGcm = false;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
