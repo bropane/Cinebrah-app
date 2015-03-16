@@ -1,6 +1,11 @@
 <resources>
 
-    <style name="AppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="AppTheme.Base">
+        <!-- Base application theme.
+             Defining this lets values-v21/styles.xml reuse it with changes. -->
+    </style>
+
+    <style name="AppTheme.Base" parent="MaterialDrawerBaseTheme.Light.DarkActionBar">
         <item name="colorPrimary">@color/cinebrah_red</item>
         <item name="colorPrimaryDark">@color/dark_cinebrah_red</item>
         <item name="android:colorBackground">@android:color/white</item>
@@ -11,6 +16,14 @@
     <style name="AppTheme.SearchView" parent="Widget.AppCompat.SearchView">
         <item name="queryBackground">@color/cinebrah_red</item>
         <item name="queryHint">@string/search_rooms_hint</item>
+    </style>
+
+    <style name="ToolbarStyle">
+        <item name="android:background">@color/cinebrah_red</item>
+    </style>
+
+    <style name="AppTheme.Toolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+
     </style>
 
 </resources>

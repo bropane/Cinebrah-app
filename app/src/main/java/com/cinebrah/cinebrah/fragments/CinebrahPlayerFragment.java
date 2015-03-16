@@ -1,5 +1,6 @@
 package com.cinebrah.cinebrah.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -18,31 +19,39 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
 
+import timber.log.Timber;
+
 /**
  * Created by Taylor on 10/2/2014.
  */
 public class CinebrahPlayerFragment extends YouTubePlayerFragment implements YouTubePlayer.OnInitializedListener,
-        YouTubePlayer.PlaybackEventListener, YouTubePlayer.PlayerStateChangeListener, YouTubePlayer.OnFullscreenListener {
+        YouTubePlayer.PlaybackEventListener, YouTubePlayer.PlayerStateChangeListener, YouTubePlayer.OnFullscreenListener,
+        View.OnClickListener {
 
     private final static String LOG_TAG = "CinebrahPlayerFragment";
-
     private static final int RECOVERY_DIALOG_REQUEST = 1;
-
+    OnSizeChangedListener onSizeChangedListener;
     YouTubePlayer mPlayer;
-
     boolean fullscreen;
     boolean isPlayerReady = false;
     boolean isMinimized = false;
-
     int defaultPlayerHeight;
     float playerMinScale;
-
     View fragmentLayout;
-
     Video currentVideo;
 
     public CinebrahPlayerFragment() {
         super();
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            onSizeChangedListener = (OnSizeChangedListener) activity;
+        } catch (ClassCastException e) {
+            Timber.e("Activity must implement OnSizeChangedListener", e);
+        }
     }
 
     @Override
@@ -53,6 +62,7 @@ public class CinebrahPlayerFragment extends YouTubePlayerFragment implements You
         getResources().getValue(R.dimen.player_scale_factor, outValue, true);
         playerMinScale = outValue.getFloat();
         Log.d(LOG_TAG, "Height: " + defaultPlayerHeight);
+        fragmentLayout.setOnClickListener(this);
         doLayout();
         return fragmentLayout;
     }
@@ -79,18 +89,18 @@ public class CinebrahPlayerFragment extends YouTubePlayerFragment implements You
         }
     }
 
-    //TODO Write OnClick to maximize the minimized fragment
-
     public void initialize() {
         this.initialize(AppConstants.DEVELOPER_KEY, this);
     }
+
+    //TODO Write OnClick to maximize the minimized fragment
 
     public void playVideo(String videoId) {
         playVideo(videoId, 0);
     }
 
-    public void playVideo(String videoId, int startTime) {
-        currentVideo = new Video(videoId, startTime);
+    public void playVideo(String videoId, int startTime) { // Start time in seconds
+        currentVideo = new Video(videoId, startTime * 1000);
         if (isPlayerReady()) {
             mPlayer.loadVideo(currentVideo.getVideoId(), currentVideo.getStartTime());
         }
@@ -124,8 +134,8 @@ public class CinebrahPlayerFragment extends YouTubePlayerFragment implements You
     }
 
     public void maximize() {
-        RelativeLayout.LayoutParams playerParams =
-                (RelativeLayout.LayoutParams) fragmentLayout.getLayoutParams();
+        FrameLayout.LayoutParams playerParams =
+                (FrameLayout.LayoutParams) fragmentLayout.getLayoutParams();
         playerParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
         playerParams.height = getResources().getDimensionPixelSize(R.dimen.player_height);
         FrameLayout container = (FrameLayout) fragmentLayout.getParent();
@@ -138,6 +148,13 @@ public class CinebrahPlayerFragment extends YouTubePlayerFragment implements You
         container.requestLayout();
         isMinimized = false;
         BaseApplication.getBus().post(new ResizeEvent(isMinimized));
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (isMinimized) {
+            maximize();
+        }
     }
 
     private void doLayout() {
@@ -178,7 +195,7 @@ public class CinebrahPlayerFragment extends YouTubePlayerFragment implements You
         mPlayer.setPlaybackEventListener(this);
         isPlayerReady = true;
         if (currentVideo != null) {
-            this.playVideo(currentVideo.videoId, currentVideo.startTime);
+            playVideo(currentVideo.getVideoId(), currentVideo.getStartTime());
         }
     }
 
@@ -269,6 +286,12 @@ public class CinebrahPlayerFragment extends YouTubePlayerFragment implements You
             mPlayer = null;
             isPlayerReady = false;
         }
+    }
+
+    public interface OnSizeChangedListener {
+        void onMinimized();
+
+        void onMaximized();
     }
 
     public static class FullScreenEvent {

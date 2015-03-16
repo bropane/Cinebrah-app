@@ -3,21 +3,29 @@ package com.cinebrah.cinebrah.activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.cinebrah.cinebrah.BaseApplication;
 import com.cinebrah.cinebrah.R;
 import com.cinebrah.cinebrah.fragments.ChatFragment;
 import com.cinebrah.cinebrah.fragments.CinebrahPlayerFragment;
 import com.cinebrah.cinebrah.fragments.SearchVideosFragment;
+import com.cinebrah.cinebrah.net.GcmManager;
 import com.cinebrah.cinebrah.net.YoutubeSearcher;
+import com.cinebrah.cinebrah.net.models.QueuedVideo;
+import com.cinebrah.cinebrah.net.models.RoomConnectionResponse;
+import com.cinebrah.cinebrah.net.models.RoomDetailed;
+import com.cinebrah.cinebrah.net.requests.ConnectRoomRequest;
+import com.cinebrah.cinebrah.net.requests.DisconnectRoomRequest;
+import com.cinebrah.cinebrah.net.requests.GetRoomDetailedRequest;
+import com.octo.android.robospice.persistence.exception.SpiceException;
+import com.octo.android.robospice.request.listener.RequestListener;
 import com.squareup.otto.Subscribe;
 
 import java.util.regex.Matcher;
@@ -27,12 +35,16 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
+import hugo.weaving.DebugLog;
+import timber.log.Timber;
 
-public class CinemaActivity extends ActionBarActivity {
+public class CinemaActivity extends BaseActivity implements CinebrahPlayerFragment.OnSizeChangedListener {
 
     public static final String KEY_ROOM_ID = "room_id";
+    public static final String KEY_ROOM_NAME = "room_name";
     private final static String LOG_TAG = "MainActivity";
     private static final int RECOVERY_DIALOG_REQUEST = 1;
+
     @InjectView(R.id.cinema_other_views)
     LinearLayout otherViews;
     @InjectView(R.id.layout_expandable_queued_videos)
@@ -41,8 +53,8 @@ public class CinemaActivity extends ActionBarActivity {
     FrameLayout mFragmentContainer;
     @InjectView(R.id.back_fragment_container)
     FrameLayout backFragmentContainer;
-
-//    ApiServiceOld.RoomInfoEvent currentRoomInfo = new ApiServiceOld.RoomInfoEvent();
+    @InjectView(R.id.text_room_name)
+    TextView roomNameTV;
 
     boolean isQueueListExpanded = false;
     boolean isTutorialShowing;
@@ -53,10 +65,8 @@ public class CinemaActivity extends ActionBarActivity {
     ChatFragment chatFragment;
     SearchVideosFragment searchVideosFragment;
 
-    Handler handler;
-//    PlayVideoTask playVideoTask;
-
     String roomId;
+    String roomName;
 
     public static String getYouTubeVideoId(String video_url) {
         if (video_url != null && video_url.length() > 0) {
@@ -97,10 +107,21 @@ public class CinemaActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cinema);
         ButterKnife.inject(this);
+        BaseApplication.getBus().register(this);
         Intent startIntent = getIntent();
         roomId = startIntent.getStringExtra(KEY_ROOM_ID);
-//        BaseApplication.getApiService().getRoomInfo(roomId);
-        getSupportActionBar().hide();
+        roomName = startIntent.getStringExtra(KEY_ROOM_NAME);
+        Timber.d("Started with Room ID: %s, Room Name: %s", roomId, roomName);
+        roomNameTV.setText(roomName);
+        initFragments();
+
+        /*String youtubeId = getBrowserYoutubeSelection();
+        if (youtubeId != null) {
+            cinebrahPlayerFragment.playVideo(youtubeId);
+        }*/
+    }
+
+    private void initFragments() {
         cinebrahPlayerFragment = new CinebrahPlayerFragment();
         chatFragment = ChatFragment.newInstance();
         searchVideosFragment = SearchVideosFragment.newInstance();
@@ -109,28 +130,22 @@ public class CinemaActivity extends ActionBarActivity {
                 .add(R.id.cinema_fragment_container, chatFragment)
                 .add(R.id.back_fragment_container, searchVideosFragment)
                 .commit();
-
-        handler = new Handler();
-//        playVideoTask = new PlayVideoTask();
-
-        BaseApplication.getBus().register(this);
-//        doLayout();
-
-        String youtubeId = getBrowserYoutubeSelection();
-        if (youtubeId != null) {
-            cinebrahPlayerFragment.playVideo(youtubeId);
-        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        if (roomId != null) {
+            connectToRoom(roomId);
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-//        BaseApplication.getApiService().disconnectFromRoom(AppConstants.getUserId(), roomId);
+        if (roomId != null) {
+            disconnectFromRoom(roomId);
+        }
     }
 
     @Override
@@ -143,7 +158,86 @@ public class CinemaActivity extends ActionBarActivity {
     @SuppressWarnings("unused")
     @OnClick(R.id.button_queue_list)
     void openQueueList() {
-        expandQueueList(!isQueueListExpanded);
+        inflateBackLayout();
+    }
+
+    protected void connectToRoom(String roomId) {
+        String registrationId = GcmManager.getRegistrationId();
+        ConnectRoomRequest request = new ConnectRoomRequest(roomId, registrationId, null); // TODO handle Token
+        getSpiceManager().execute(request, new RequestListener<RoomConnectionResponse>() {
+            @DebugLog
+            @Override
+            public void onRequestFailure(SpiceException spiceException) {
+                Timber.e("Could not connect to room", spiceException); // TODO show error message
+            }
+
+            @DebugLog
+            @Override
+            public void onRequestSuccess(RoomConnectionResponse roomConnectionResponse) {
+                if (roomConnectionResponse.wasSuccessful()) {
+                    Timber.d("Connected to Room Id: %s", roomConnectionResponse.getRoomId());
+                    getRoomInfo(roomConnectionResponse.getRoomId());
+                } else {
+                    Timber.e("Could not connect to room"); // TODO show error message
+                }
+            }
+        });
+    }
+
+    protected void disconnectFromRoom(String roomId) {
+        String registrationId = GcmManager.getRegistrationId();
+        DisconnectRoomRequest request = new DisconnectRoomRequest(roomId, registrationId, null); // TODO handle Token
+        getSpiceManager().execute(request, new RequestListener<RoomConnectionResponse>() {
+            @Override
+            public void onRequestFailure(SpiceException spiceException) {
+                Timber.e("Disconnect from room error", spiceException);
+            }
+
+            @Override
+            public void onRequestSuccess(RoomConnectionResponse roomConnectionResponse) {
+                Timber.d("Disconnected from room: %s", roomConnectionResponse.getRoomId());
+            }
+        });
+    }
+
+    protected void getRoomInfo(String roomId) {
+        GetRoomDetailedRequest request = new GetRoomDetailedRequest(roomId);
+        getSpiceManager().execute(request, new RequestListener<RoomDetailed>() {
+
+            @DebugLog
+            @Override
+            public void onRequestFailure(SpiceException spiceException) {
+                Timber.e("Could not get room info", spiceException); // TODO show error message
+            }
+
+            @DebugLog
+            @Override
+            public void onRequestSuccess(RoomDetailed roomDetailed) {
+                try {
+                    QueuedVideo video = roomDetailed.getQueuedVideos().get(0);
+                    playVideo(video);
+                } catch (IndexOutOfBoundsException e) {
+                    // Ignore, empty queue list
+                }
+            }
+        });
+    }
+
+    protected void playVideo(QueuedVideo video) {
+        String videoId = video.getYoutubeId();
+        int currentPlayTime = video.getCurrentPlayTime();
+        Timber.d("Video ID: %s, Current Video Time: %s", videoId, currentPlayTime);
+        cinebrahPlayerFragment.playVideo(videoId, currentPlayTime);
+    }
+
+    private void inflateBackLayout() {
+        cinebrahPlayerFragment.minimize();
+        backFragmentContainer.setVisibility(View.VISIBLE);
+    }
+
+    private void collapseBackLayout() {
+        cinebrahPlayerFragment.maximize();
+        backFragmentContainer.setVisibility(View.GONE);
     }
 
     /*@SuppressWarnings("unused")
@@ -160,10 +254,8 @@ public class CinemaActivity extends ActionBarActivity {
     }*/
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        super.onCreateOptionsMenu(menu);
-        return true;
+    public void onMinimized() {
+
     }
 
 /*    private void doLayout() {
@@ -186,6 +278,18 @@ public class CinemaActivity extends ActionBarActivity {
     }*/
 
     @Override
+    public void onMaximized() {
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        super.onCreateOptionsMenu(menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -200,6 +304,12 @@ public class CinemaActivity extends ActionBarActivity {
             cinebrahPlayerFragment.initialize();
         }
     }
+
+    /*private void playCurrentVideo() {
+        if (currentRoomInfo.getCurrentVideoId() != null && !currentRoomInfo.getCurrentVideoId().equals("None")) {
+            cinebrahPlayerFragment.playVideo(currentRoomInfo.getCurrentVideoId(), 1000 * (int) currentRoomInfo.getCurrentVideoTime());
+        }
+    }*/
 
     public void openSearchFragment() {
         Log.d(LOG_TAG, "openSearch");
@@ -220,12 +330,6 @@ public class CinemaActivity extends ActionBarActivity {
             isQueueListExpanded = false;
         }
     }
-
-    /*private void playCurrentVideo() {
-        if (currentRoomInfo.getCurrentVideoId() != null && !currentRoomInfo.getCurrentVideoId().equals("None")) {
-            cinebrahPlayerFragment.playVideo(currentRoomInfo.getCurrentVideoId(), 1000 * (int) currentRoomInfo.getCurrentVideoTime());
-        }
-    }*/
 
     private String getYoutubeShareData() {
         /**
@@ -256,11 +360,9 @@ public class CinemaActivity extends ActionBarActivity {
     @Subscribe
     public void onResizeEvent(CinebrahPlayerFragment.ResizeEvent event) {
         if (event.isMinimized()) {
-            backFragmentContainer.setVisibility(View.VISIBLE);
-//            getActionBar().show();
+
         } else {
-            backFragmentContainer.setVisibility(View.GONE);
-//            getActionBar().hide();
+
         }
     }
 

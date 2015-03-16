@@ -3,7 +3,6 @@
     android:id="@+id/cinema_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/listBackground_openSource"
     tools:context="com.cinebrah.cinebrah.activities.CinemaActivity">
 
     <FrameLayout
@@ -20,7 +19,7 @@
     <include
         layout="@layout/layout_cinema_other_views"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="match_parent"
         android:layout_below="@+id/player_container" />
 
 </RelativeLayout>

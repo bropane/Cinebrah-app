@@ -68,5 +68,7 @@
     <string name="dyel">DYEL?</string>
     <string name="launch_error_button">RETRY</string>
     <string name="nothing">Nothing...</string>
+    <string name="nav_about">About</string>
+    <string name="nav_create_room">Create Room</string>
 
 </resources>

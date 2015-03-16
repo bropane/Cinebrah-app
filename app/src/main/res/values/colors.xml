@@ -13,6 +13,7 @@
     <color name="red_list_divider">#EE5B4F</color>
     <color name="youtube_view_background">#ff000000</color>
     <color name="transparent_tint">#9e5d0b0b</color>
+    <color name="material_drawer_selected_text">@color/cinebrah_red</color>
 
     <drawable name="list_drawer_item_background">@android:color/transparent</drawable>
     <drawable name="list_drawer_item_pressed">@android:color/darker_gray</drawable>

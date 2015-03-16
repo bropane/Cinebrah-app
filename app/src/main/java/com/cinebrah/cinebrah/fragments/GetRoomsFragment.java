@@ -1,9 +1,13 @@
 package com.cinebrah.cinebrah.fragments;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ListView;
 
 import com.cinebrah.cinebrah.activities.BaseActivity;
+import com.cinebrah.cinebrah.activities.CinemaActivity;
 import com.cinebrah.cinebrah.net.models.Room;
 import com.cinebrah.cinebrah.net.models.RoomsResult;
 import com.cinebrah.cinebrah.net.requests.GetRoomsRequest;
@@ -12,6 +16,7 @@ import com.octo.android.robospice.request.listener.RequestListener;
 
 import java.util.ArrayList;
 
+import hugo.weaving.DebugLog;
 import timber.log.Timber;
 
 public class GetRoomsFragment extends RoomsFragment implements RequestListener<RoomsResult> {
@@ -20,6 +25,7 @@ public class GetRoomsFragment extends RoomsFragment implements RequestListener<R
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
     GetRoomsRequest getRoomsRequest;
     BaseActivity baseActivity;
     // TODO: Rename and change types of parameters
@@ -59,7 +65,6 @@ public class GetRoomsFragment extends RoomsFragment implements RequestListener<R
     public void onStart() {
         super.onStart();
         if (getRoomAdapter().getCount() == 0) {
-//          BaseApplication.getApiService().getRooms(getCurrentPage());
             baseActivity.getSpiceManager().execute(getRoomsRequest, this);
         }
     }
@@ -70,8 +75,20 @@ public class GetRoomsFragment extends RoomsFragment implements RequestListener<R
     }
 
     @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        Room room = getRoomAdapter().getItem(position);
+        Intent intent = new Intent(getActivity(), CinemaActivity.class);
+        intent.putExtra(CinemaActivity.KEY_ROOM_ID, room.getRoomId());
+        intent.putExtra(CinemaActivity.KEY_ROOM_NAME, room.getRoomName());
+        startActivity(intent);
+    }
+
+    @DebugLog
+    @Override
     public void onLoadMore(int page, int totalItemsCount) {
-//        BaseApplication.getApiService().getRooms(page);
+        getRoomsRequest.setPage(page);
+        baseActivity.getSpiceManager().execute(getRoomsRequest, this);
     }
 
     @Override
@@ -84,12 +101,6 @@ public class GetRoomsFragment extends RoomsFragment implements RequestListener<R
         ArrayList<Room> rooms = (ArrayList<Room>) roomsResult.getResults();
         getRoomAdapter().addAll(rooms);
     }
-
-    /*@Subscribe
-    public void onReceivedRooms(ApiServiceOld.GetRoomsEvent event) {
-        addRooms(event.getRooms());
-
-    }*/
 
     /*@Subscribe
     public void onConnectedToRoom(ApiServiceOld.ConnectRoomEvent event) {

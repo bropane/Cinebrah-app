@@ -18,8 +18,7 @@
         <Button
             android:id="@+id/button_queue_list"
             android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/selector_queue_button" />
+            android:layout_height="40dp" />
 
         <Space
             android:layout_width="20dp"
@@ -42,8 +41,7 @@
         <Button
             android:id="@+id/button_next"
             android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/selector_next_button" />
+            android:layout_height="40dp" />
 
     </LinearLayout>
 

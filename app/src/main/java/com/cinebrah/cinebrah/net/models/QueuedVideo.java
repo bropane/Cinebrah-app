@@ -11,6 +11,7 @@ public class QueuedVideo {
     String user;
     int start_time;
     int queue_time;
+    int current_play_time;
 
     public String getYoutubeId() {
         return youtube_id;
@@ -38,6 +39,10 @@ public class QueuedVideo {
 
     public int getQueueTime() {
         return queue_time;
+    }
+
+    public int getCurrentPlayTime() {
+        return current_play_time;
     }
 
     public String getDurationText() {
