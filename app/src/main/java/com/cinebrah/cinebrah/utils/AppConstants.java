@@ -20,16 +20,16 @@ import com.tundem.aboutlibraries.ui.LibsActivity;
  */
 public class AppConstants {
 
-    public static final String DEVELOPER_KEY = "AIzaSyAVqBNyJNaXBB3IZFbRQ4KQwucVlscOA8o";
-    public static final String YOUTUBE_DATA_API_KEY = "AIzaSyB_X55scQwesxGYgmFJSy6TSfLGmVCH_Vc";
-    public static final String WEB_CLIENT_ID = "576346265196-1pfmc8oeven5qv46r8ur4b8n4bgnbfve.apps.googleusercontent.com";
+    public static final String DEVELOPER_KEY = "key";
+    public static final String YOUTUBE_DATA_API_KEY = "key";
+    public static final String WEB_CLIENT_ID = "googleusercontent.com";
     public static final String AUDIENCE = "server:client_id:" + WEB_CLIENT_ID;
     public static final String CINEBRAH_PREFS_NAME = "cinebrahprefs";
     public static final String KEY_DEFAULT_ACCOUNT = "default_account";
     public static final String KEY_IS_FIRST_LAUNCH = "is_first_launch";
     public static final String APP_SERVER = "https://cinebrah.herokuapp.com";
     public static final String DEV_APP_SERVER = "http://127.0.0.1:5000";
-    public static final String CINEBRAH_API_KEY = "d79f7d9220433bd6400b407024006b61ce61d21f4bc8fbe46d67da1e";
+    public static final String CINEBRAH_API_KEY = "key";
 
     public static int countGoogleAccounts(Context context) {
         AccountManager am = AccountManager.get(context);
